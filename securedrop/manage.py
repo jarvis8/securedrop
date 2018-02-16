@@ -312,8 +312,7 @@ def translate_messages(args):
                    version=args.version,
                    sources=" ".join(args.source)))
 
-        changed = subprocess.call("git diff --quiet {}".format(messages_file),
-                                  shell=True)
+        changed = subprocess.call(['git', 'diff', '--quiet', messages_file])
 
         if changed and len(os.listdir(args.translations_dir)) > 1:
             sh("""
@@ -359,8 +358,7 @@ def translate_desktop(args):
                    version=args.version,
                    sources=" ".join(args.source)))
 
-        changed = subprocess.call("git diff --quiet {}".format(messages_file),
-                                  shell=True)
+        changed = subprocess.call(['git', 'diff', '--quiet', messages_file])
 
         if changed:
             for f in os.listdir(args.translations_dir):
