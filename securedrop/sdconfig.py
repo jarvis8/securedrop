@@ -10,36 +10,37 @@ if MYPY:
 class SDConfig(object):
     def __init__(self):
         # type: () -> None
-        self.ADJECTIVES = _config.ADJECTIVES
-        self.DATABASE_ENGINE = _config.DATABASE_ENGINE
-        self.DEFAULT_LOCALE = _config.DEFAULT_LOCALE
         self.FlaskConfig = _config.FlaskConfig
-        self.GPG_KEY_DIR = _config.GPG_KEY_DIR
-        self.JOURNALIST_KEY = _config.JOURNALIST_KEY
-        self.JOURNALIST_TEMPLATES_DIR = _config.JOURNALIST_TEMPLATES_DIR
         self.JournalistInterfaceFlaskConfig = \
             _config.JournalistInterfaceFlaskConfig
-        self.NOUNS = _config.NOUNS
-        self.SCRYPT_GPG_PEPPER = _config.SCRYPT_GPG_PEPPER
-        self.SCRYPT_ID_PEPPER = _config.SCRYPT_ID_PEPPER
-        self.SCRYPT_PARAMS = _config.SCRYPT_PARAMS
-        self.SECUREDROP_DATA_ROOT = _config.SECUREDROP_DATA_ROOT
-        self.SECUREDROP_ROOT = _config.SECUREDROP_ROOT
-        self.SESSION_EXPIRATION_MINUTES = _config.SESSION_EXPIRATION_MINUTES
-        self.SOURCE_TEMPLATES_DIR = _config.SOURCE_TEMPLATES_DIR
-        self.STORE_DIR = _config.STORE_DIR
-        self.SUPPORTED_LOCALES = []  # type: List[str]
         self.SourceInterfaceFlaskConfig = _config.SourceInterfaceFlaskConfig
-        self.TEMP_DIR = _config.TEMP_DIR
-        self.WORD_LIST = _config.WORD_LIST
-        self.WORKER_PIDFILE = _config.WORKER_PIDFILE
-        self.env = _config.env
-        self.os = _config.os
+
+        self.ADJECTIVES = ""
+        self.DATABASE_ENGINE = ""
+        self.DEFAULT_LOCALE = ""
+        self.GPG_KEY_DIR = ""
+        self.JOURNALIST_KEY = ""
+        self.JOURNALIST_TEMPLATES_DIR = ""
+        self.NOUNS = ""
+        self.SCRYPT_GPG_PEPPER = ""
+        self.SCRYPT_ID_PEPPER = ""
+        self.SCRYPT_PARAMS = ""
+        self.SECUREDROP_DATA_ROOT = ""
+        self.SECUREDROP_ROOT = ""
+        self.SESSION_EXPIRATION_MINUTES = 120
+        self.SOURCE_TEMPLATES_DIR = ""
+        self.STORE_DIR = ""
+        self.SUPPORTED_LOCALES = []  # type: List[str]
+        self.TEMP_DIR = ""
+        self.WORD_LIST = ""
+        self.WORKER_PIDFILE = ""
+        self.TRANSLATION_DIRS = ""
         # Below 4 attributes are only for non-sqlite env
         self.DATABASE_USERNAME = ""
         self.DATABASE_PASSWORD = ""
         self.DATABASE_HOST = ""
         self.DATABASE_NAME = ""
+        # This is sqlite env
         self.DATABASE_FILE = ""
         # This by default is an empty string
         self.CUSTOM_HEADER_IMAGE = ""
@@ -60,6 +61,23 @@ class SDConfig(object):
         if hasattr(_config, 'SUPPORTED_LOCALES'):
             self.SUPPORTED_LOCALES = \
                 _config.SUPPORTED_LOCALES  # type: ignore
+
+        # Now we will fill up existing values from config.py
+        # In future after moving out from the config.py to a
+        # static configuration file, we should remove any dynamic
+        # attribution set/get code like below.
+        attributes = [
+            'ADJECTIVES', 'DATABASE_ENGINE', 'DATABASE_FILE', 'DEFAULT_LOCALE',
+            'GPG_KEY_DIR', 'JOURNALIST_KEY', 'JOURNALIST_TEMPLATES_DIR',
+            'NOUNS', 'SCRYPT_GPG_PEPPER', 'SCRYPT_ID_PEPPER', 'SCRYPT_PARAMS',
+            'SECUREDROP_DATA_ROOT', 'SECUREDROP_ROOT',
+            'SESSION_EXPIRATION_MINUTES', 'SOURCE_TEMPLATES_DIR', 'STORE_DIR',
+            'SUPPORTED_LOCALES', 'TEMP_DIR', 'WORD_LIST', 'WORKER_PIDFILE',
+            'TRANSLATION_DIRS', 'env', 'os'
+        ]
+        for attr in attributes:
+            if hasattr(_config, attr):
+                self.__setattr__(attr, getattr(_config, attr))
 
 
 config = SDConfig()  # type: SDConfig
