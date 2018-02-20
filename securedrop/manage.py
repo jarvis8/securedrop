@@ -82,7 +82,7 @@ def reset(args):
     3. Erases stored submissions and replies from the store dir.
     """
     # Erase the development db file
-    if not hasattr(config, 'DATABASE_FILE'):
+    if not config.DATABASE_FILE:
         raise Exception("TODO: ./manage.py doesn't know how to clear the db "
                         'if the backend is not sqlite')
     try:

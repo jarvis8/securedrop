@@ -39,9 +39,12 @@ def setup_app(config, app):
     global LOCALES
     global babel
 
-    translation_dirs = getattr(config, 'TRANSLATION_DIRS', None)
+    translation_dirs = None
 
-    if translation_dirs is None:
+    if config.TRANSLATION_DIRS:
+        translation_dirs = config.TRANSLATION_DIRS
+
+    if not translation_dirs:
             translation_dirs = \
                     path.join(path.dirname(path.realpath(__file__)),
                               'translations')
